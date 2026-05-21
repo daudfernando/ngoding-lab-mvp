@@ -7,6 +7,7 @@ import sys
 BLOCKED_IMPORTS = {"os", "sys", "subprocess", "pathlib", "socket", "requests", "shutil", "glob"}
 BLOCKED_BUILTINS = {"open", "eval", "exec", "compile", "__import__", "input"}
 ALLOWED_BUILTINS = {
+    "__build_class__": __build_class__,
     "abs": abs,
     "all": all,
     "any": any,
@@ -73,6 +74,7 @@ def _controlled_input(prompt=""):
         return ""
 
 safe_builtins = {{
+    "__build_class__": __build_class__,
     "abs": abs,
     "all": all,
     "any": any,
@@ -95,7 +97,7 @@ safe_builtins = {{
     "input": _controlled_input,
 }}
 
-exec(compile(code, "<student_code>", "exec"), {{"__builtins__": safe_builtins}}, {{}})
+exec(compile(code, "<student_code>", "exec"), {{"__builtins__": safe_builtins, "__name__": "__student__"}}, {{}})
 """
     try:
         result = subprocess.run(

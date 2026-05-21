@@ -1,4 +1,5 @@
 from core.auth import hash_password
+from core.curriculum import ensure_curriculum
 from core.models import Course, CourseCode, Enrollment, Lesson, Task, TaskOption, User
 
 
@@ -37,6 +38,7 @@ def _get_or_create_user(db, email, name, password, role):
 def seed_if_empty(db):
     normalize_seed_branding(db)
     if db.query(User).count() > 0:
+        ensure_curriculum(db)
         return
 
     admin = _get_or_create_user(db, "admin@ngodinglab.id", "Admin Ngoding Lab", "admin123", "admin")
@@ -130,3 +132,4 @@ def seed_if_empty(db):
         ]
     )
     db.commit()
+    ensure_curriculum(db)
