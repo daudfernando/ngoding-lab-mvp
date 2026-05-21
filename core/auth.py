@@ -44,6 +44,10 @@ def login_user(user: User) -> None:
 def logout_user() -> None:
     for key in ["user", "selected_course_id", "selected_lesson_id"]:
         st.session_state.pop(key, None)
+    try:
+        st.switch_page("app.py")
+    except Exception:
+        st.rerun()
 
 
 def current_user():
@@ -54,6 +58,11 @@ def require_login():
     user = current_user()
     if not user:
         st.warning("Silakan login terlebih dahulu.")
+        if st.button("Kembali ke Login"):
+            try:
+                st.switch_page("app.py")
+            except Exception:
+                st.rerun()
         st.stop()
     return user
 
