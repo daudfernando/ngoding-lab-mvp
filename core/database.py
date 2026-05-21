@@ -9,9 +9,9 @@ Base = declarative_base()
 
 def _normalize_database_url(url: str) -> str:
     if url.startswith("postgres://"):
-        return url.replace("postgres://", "postgresql+psycopg2://", 1)
+        return url.replace("postgres://", "postgresql+psycopg://", 1)
     if url.startswith("postgresql://"):
-        return url.replace("postgresql://", "postgresql+psycopg2://", 1)
+        return url.replace("postgresql://", "postgresql+psycopg://", 1)
     return url
 
 
