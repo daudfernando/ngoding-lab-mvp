@@ -13,6 +13,13 @@ load_dotenv(BASE_DIR / ".env")
 
 def get_database_url() -> str:
     database_url = os.getenv("DATABASE_URL", "").strip()
+    if not database_url:
+        try:
+            import streamlit as st
+
+            database_url = str(st.secrets.get("DATABASE_URL", "")).strip()
+        except Exception:
+            database_url = ""
     if database_url:
         return database_url
     return f"sqlite:///{DATA_DIR / 'ngoding_lab.db'}"
