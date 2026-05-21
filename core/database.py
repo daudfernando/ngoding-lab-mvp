@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.pool import NullPool
 
 from core.config import get_database_url
 
@@ -16,8 +17,17 @@ def _normalize_database_url(url: str) -> str:
 
 
 DATABASE_URL = _normalize_database_url(get_database_url())
-connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
-engine = create_engine(DATABASE_URL, connect_args=connect_args, pool_pre_ping=True)
+if DATABASE_URL.startswith("sqlite"):
+    connect_args = {"check_same_thread": False}
+    engine = create_engine(DATABASE_URL, connect_args=connect_args, pool_pre_ping=True)
+else:
+    connect_args = {"prepare_threshold": None}
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args=connect_args,
+        poolclass=NullPool,
+        pool_pre_ping=True,
+    )
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 
