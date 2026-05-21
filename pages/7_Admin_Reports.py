@@ -7,7 +7,7 @@ from core.models import Course, Enrollment, Lesson, StudentProgress, Submission,
 from core.ui import apply_theme, metric_card, sidebar_user
 
 
-st.set_page_config(page_title="Admin Reports", layout="wide")
+st.set_page_config(page_title="Laporan", layout="wide")
 apply_theme()
 require_role("admin")
 sidebar_user()
@@ -15,7 +15,7 @@ if st.sidebar.button("Logout"):
     logout_user()
     st.rerun()
 
-st.title("Admin Reports")
+st.title("Laporan")
 db = get_db()
 try:
     st.subheader("Ringkasan")

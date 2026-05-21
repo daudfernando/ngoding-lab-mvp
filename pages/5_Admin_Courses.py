@@ -9,7 +9,7 @@ from core.models import Course, CourseCode, Enrollment, Lesson
 from core.ui import apply_theme, sidebar_user
 
 
-st.set_page_config(page_title="Admin Courses", layout="wide")
+st.set_page_config(page_title="Kelola Course", layout="wide")
 apply_theme()
 require_role("admin")
 sidebar_user()
@@ -17,7 +17,7 @@ if st.sidebar.button("Logout"):
     logout_user()
     st.rerun()
 
-st.title("Admin Courses")
+st.title("Kelola Course")
 db = get_db()
 try:
     st.subheader("Buat Course Baru")

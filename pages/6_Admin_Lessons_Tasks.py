@@ -7,7 +7,7 @@ from core.models import Course, Lesson, Task, TaskOption, TestCase
 from core.ui import apply_theme, sidebar_user
 
 
-st.set_page_config(page_title="Admin Lessons Tasks", layout="wide")
+st.set_page_config(page_title="Kelola Lesson & Task", layout="wide")
 apply_theme()
 require_role("admin")
 sidebar_user()
@@ -15,7 +15,7 @@ if st.sidebar.button("Logout"):
     logout_user()
     st.rerun()
 
-st.title("Admin Lessons & Tasks")
+st.title("Kelola Lesson & Task")
 db = get_db()
 try:
     courses = db.query(Course).order_by(Course.title.asc()).all()

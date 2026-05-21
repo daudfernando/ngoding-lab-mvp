@@ -13,7 +13,7 @@ from core.progress import get_student_courses, mark_task_completed, unlocked_les
 from core.ui import apply_theme, sidebar_user
 
 
-st.set_page_config(page_title="Lesson Task", layout="wide")
+st.set_page_config(page_title="Latihan", layout="wide")
 apply_theme()
 user = require_role("student")
 sidebar_user()
@@ -21,7 +21,7 @@ if st.sidebar.button("Logout"):
     logout_user()
     st.rerun()
 
-st.title("Lesson Task")
+st.title("Latihan")
 db = get_db()
 try:
     enrollments = get_student_courses(db, user["id"])

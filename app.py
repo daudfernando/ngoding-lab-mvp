@@ -10,7 +10,7 @@ from core.seed import seed_if_empty
 from core.ui import apply_theme, sidebar_user
 
 
-st.set_page_config(page_title="Ngoding Lab MVP", page_icon="NL", layout="wide")
+st.set_page_config(page_title="Ngoding Lab", page_icon="NL", layout="wide")
 apply_theme()
 init_db()
 db = get_db()
@@ -28,19 +28,24 @@ def do_switch(page):
 
 
 def login_view():
-    st.title("Ngoding Lab MVP")
+    sidebar_user()
+    st.title("Ngoding Lab")
     st.caption("Platform latihan coding untuk siswa pemula.")
 
     login_tab, register_tab = st.tabs(["Login", "Daftar dengan Kode Kelas"])
     with login_tab:
+        role_view = st.radio("Masuk sebagai", ["Student", "Admin"], horizontal=True)
         with st.form("login_form"):
-            email = st.text_input("Email")
+            default_email = "student@ngodinglab.id" if role_view == "Student" else "admin@ngodinglab.id"
+            email = st.text_input("Email", value=default_email)
             password = st.text_input("Password", type="password")
             submitted = st.form_submit_button("Login")
         if submitted:
             user = authenticate_user(email, password)
             if not user:
                 st.error("Email atau password salah, atau akun belum aktif.")
+            elif user.role != role_view.lower():
+                st.error(f"Akun ini bukan role {role_view}. Pilih role yang sesuai.")
             else:
                 login_user(user)
                 st.success("Login berhasil.")
@@ -106,13 +111,13 @@ if st.sidebar.button("Logout"):
     logout_user()
     st.rerun()
 
-st.title("Ngoding Lab MVP")
+st.title("Ngoding Lab")
 st.write(f"Halo, **{user['name']}**.")
 if user["role"] == "admin":
-    st.info("Gunakan sidebar untuk membuka Admin Dashboard, mengelola siswa, course, lesson, task, dan laporan.")
-    if st.button("Buka Admin Dashboard"):
+    st.info("Gunakan sidebar untuk mengelola siswa, course, lesson, task, dan laporan.")
+    if st.button("Buka Dashboard Admin"):
         do_switch("pages/3_Admin_Dashboard.py")
 else:
-    st.info("Gunakan sidebar untuk membuka Student Dashboard dan mulai mengerjakan latihan.")
-    if st.button("Buka Student Dashboard"):
+    st.info("Gunakan sidebar untuk membuka dashboard siswa dan mulai mengerjakan latihan.")
+    if st.button("Buka Dashboard Siswa"):
         do_switch("pages/1_Student_Dashboard.py")

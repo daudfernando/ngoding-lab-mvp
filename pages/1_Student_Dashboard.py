@@ -7,7 +7,7 @@ from core.progress import course_progress, get_student_courses, lesson_is_comple
 from core.ui import apply_theme, badge, course_card, lesson_card, sidebar_user
 
 
-st.set_page_config(page_title="Student Dashboard", layout="wide")
+st.set_page_config(page_title="Dashboard Siswa", layout="wide")
 apply_theme()
 user = require_role("student")
 sidebar_user()
@@ -15,7 +15,7 @@ if st.sidebar.button("Logout"):
     logout_user()
     st.rerun()
 
-st.title("Student Dashboard")
+st.title("Dashboard Siswa")
 db = get_db()
 try:
     enrollments = get_student_courses(db, user["id"])
@@ -72,6 +72,6 @@ try:
             try:
                 st.switch_page("pages/2_Lesson_Task.py")
             except Exception:
-                st.info("Buka halaman Lesson Task dari sidebar.")
+                st.info("Buka halaman Latihan dari sidebar.")
 finally:
     db.close()

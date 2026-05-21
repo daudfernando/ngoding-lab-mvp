@@ -6,7 +6,7 @@ from core.models import Course, Lesson, Submission, Task, User
 from core.ui import apply_theme, metric_card, sidebar_user
 
 
-st.set_page_config(page_title="Admin Dashboard", layout="wide")
+st.set_page_config(page_title="Dashboard Admin", layout="wide")
 apply_theme()
 user = require_role("admin")
 sidebar_user()
@@ -14,8 +14,8 @@ if st.sidebar.button("Logout"):
     logout_user()
     st.rerun()
 
-st.title("Admin Dashboard")
-st.caption("Ringkasan cepat Ngoding Lab MVP.")
+st.title("Dashboard Admin")
+st.caption("Ringkasan cepat Ngoding Lab.")
 
 db = get_db()
 try:

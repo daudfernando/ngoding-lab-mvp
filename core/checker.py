@@ -53,7 +53,7 @@ def _validate_ast(code: str) -> None:
         if isinstance(node, ast.Attribute) and node.attr.startswith("__"):
             raise CodeSafetyError("Akses atribut internal tidak diizinkan.")
         if isinstance(node, ast.While):
-            raise CodeSafetyError("Loop while belum diizinkan di MVP1.")
+            raise CodeSafetyError("Loop while belum diizinkan untuk latihan ini.")
 
 
 def run_safe_python(code, input_data="", timeout=2):

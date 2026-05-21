@@ -7,6 +7,18 @@ def apply_theme():
         <style>
         .stApp { background: #f7f5ff; color: #1f2937; }
         [data-testid="stSidebar"] { background: #ffffff; border-right: 1px solid #ede9fe; }
+        [data-testid="stSidebarNav"] { display: none; }
+        .nl-brand {
+            color: #4c1d95; font-size: 1.28rem; font-weight: 800; margin-bottom: 12px;
+        }
+        .nl-role {
+            background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 8px;
+            padding: 10px 12px; margin: 10px 0 16px 0;
+        }
+        .nl-menu-title {
+            color: #6b7280; font-size: 0.78rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0; margin: 12px 0 4px 0;
+        }
         .nl-card {
             background: #ffffff; border: 1px solid #e9d5ff; border-radius: 8px;
             padding: 18px; margin: 10px 0; box-shadow: 0 4px 16px rgba(88, 28, 135, 0.06);
@@ -42,10 +54,29 @@ def apply_theme():
 
 def sidebar_user():
     user = st.session_state.get("user")
+    st.sidebar.markdown("<div class='nl-brand'>Ngoding Lab</div>", unsafe_allow_html=True)
     if not user:
         return
-    st.sidebar.markdown(f"**{user['name']}**")
-    st.sidebar.caption(f"Role: {user['role']}")
+    role_label = "Admin" if user["role"] == "admin" else "Student"
+    st.sidebar.markdown(
+        f"""
+        <div class="nl-role">
+          <b>{user['name']}</b><br>
+          <span class="nl-muted">Role: {role_label}</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.sidebar.markdown("<div class='nl-menu-title'>Menu</div>", unsafe_allow_html=True)
+    if user["role"] == "admin":
+        st.sidebar.page_link("pages/3_Admin_Dashboard.py", label="Dashboard Admin")
+        st.sidebar.page_link("pages/4_Admin_Students.py", label="Siswa")
+        st.sidebar.page_link("pages/5_Admin_Courses.py", label="Course")
+        st.sidebar.page_link("pages/6_Admin_Lessons_Tasks.py", label="Lesson & Task")
+        st.sidebar.page_link("pages/7_Admin_Reports.py", label="Laporan")
+    else:
+        st.sidebar.page_link("pages/1_Student_Dashboard.py", label="Dashboard Siswa")
+        st.sidebar.page_link("pages/2_Lesson_Task.py", label="Latihan")
 
 
 def badge(label: str, status: str):

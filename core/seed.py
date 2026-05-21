@@ -2,6 +2,21 @@ from core.auth import hash_password
 from core.models import Course, CourseCode, Enrollment, Lesson, Task, TaskOption, User
 
 
+def normalize_seed_branding(db):
+    changed = False
+    course = db.query(Course).filter(Course.title == "Python Basic MVP").first()
+    if course:
+        course.title = "Python Basic"
+        changed = True
+    code = db.query(CourseCode).filter(CourseCode.code == "PYTHON-MVP-01").first()
+    existing_new_code = db.query(CourseCode).filter(CourseCode.code == "PYTHON-01").first()
+    if code and not existing_new_code:
+        code.code = "PYTHON-01"
+        changed = True
+    if changed:
+        db.commit()
+
+
 def _get_or_create_user(db, email, name, password, role):
     user = db.query(User).filter(User.email == email).first()
     if user:
@@ -20,6 +35,7 @@ def _get_or_create_user(db, email, name, password, role):
 
 
 def seed_if_empty(db):
+    normalize_seed_branding(db)
     if db.query(User).count() > 0:
         return
 
@@ -27,7 +43,7 @@ def seed_if_empty(db):
     student = _get_or_create_user(db, "student@ngodinglab.id", "Student Demo", "student123", "student")
 
     course = Course(
-        title="Python Basic MVP",
+        title="Python Basic",
         description="Kursus dasar Python untuk pemula.",
         level_name="Beginner",
         is_active=True,
@@ -37,7 +53,7 @@ def seed_if_empty(db):
     db.refresh(course)
 
     db.add(Enrollment(user_id=student.id, course_id=course.id, status="active"))
-    db.add(CourseCode(course_id=course.id, code="PYTHON-MVP-01", max_users=50, used_count=0, is_active=True))
+    db.add(CourseCode(course_id=course.id, code="PYTHON-01", max_users=50, used_count=0, is_active=True))
     db.commit()
 
     lessons = [
